@@ -18,10 +18,10 @@ class LangSettingsMiddleware(BaseMiddleware):
         user: User = data.get("event_from_user")
         if user is None:
             return await handler(event, data)
-        
+
         if event.callback_query is None:
             return await handler(event,  data)
-        
+
         locales: list[str] = data.get('locales')
 
         state: FSMContext = data.get('state')
@@ -32,8 +32,8 @@ class LangSettingsMiddleware(BaseMiddleware):
             await state.set_data(user_context_data)
 
         elif (
-            event.callback_query.data in locales 
-            and 
+            event.callback_query.data in locales
+            and
             event.callback_query.data != user_context_data.get('user_lang')
         ):
             user_context_data.update(user_lang=event.callback_query.data)
